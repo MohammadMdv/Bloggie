@@ -1,0 +1,32 @@
+﻿@model bloggie.web.Models.ViewModels.DeleteTagRequest
+
+@{
+    ViewBag.Title = "Delete Tag";
+    Layout = "_Layout";
+}
+
+<h2>Delete Tag</h2>
+
+<div class="container py-5">
+    <p>Are you sure you want to delete this tag?</p>
+    <form method="post" action="@Url.Action("DeleteConfirmed", "AdminTags")">
+        <div class="mb-3">
+            <label class="form-label">Id</label>
+            <input type="text" class="form-control" id="id" asp-for="Id" readonly />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" asp-for="Name" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Display Name</label>
+            <input type="text" class="form-control" id="displayName" asp-for="DisplayName" readonly />
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="@Url.Action("List", "AdminTags")" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
