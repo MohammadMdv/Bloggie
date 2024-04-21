@@ -1,0 +1,32 @@
+﻿@model bloggie.web.Models.ViewModels.EditTagRequest
+
+@{
+    ViewBag.Title = "Edit Tag";
+    Layout = "_Layout";
+}
+
+<h2>Edit Tag</h2>
+
+<div class="container py-5">
+
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Id</label>
+            <input type="text" class="form-control" id="id" asp-for="Id" readonly /> <!-- Id field is now readonly -->
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" asp-for="Name" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Display Name</label>
+            <input type="text" class="form-control" id="displayName" asp-for="DisplayName" />
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-dark">Update</button>
+        </div>
+    </form>
+</div>
