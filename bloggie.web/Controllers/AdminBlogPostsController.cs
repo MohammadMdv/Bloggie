@@ -9,10 +9,12 @@ namespace bloggie.web.Controllers;
 public class AdminBlogPostsController : Controller
 {
     private readonly ITagRepository _tagRepository;
+    private readonly IBlogPostsRepository _blogPostsRepository;
 
-    public AdminBlogPostsController(ITagRepository tagRepository)
+    public AdminBlogPostsController(ITagRepository tagRepository, IBlogPostsRepository blogPostsRepository)
     {
         _tagRepository = tagRepository;
+        _blogPostsRepository = blogPostsRepository;
     }
     
     [HttpGet]
@@ -29,12 +31,7 @@ public class AdminBlogPostsController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddBlogPostRequest addBlogPostRequest)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(addBlogPostRequest);
-        }
-
-        var BlogPost = new BlogPost
+        var blogPost = new BlogPost
         {
             Heading = addBlogPostRequest.Heading,
             PageTitle = addBlogPostRequest.PageTitle,
@@ -46,12 +43,14 @@ public class AdminBlogPostsController : Controller
             Author = addBlogPostRequest.Author,
             Visible = addBlogPostRequest.Visible,
         };
-        Tag[] tags = Array.Empty<Tag>();
-        foreach (var tagId in addBlogPostRequest.Tags)
+        var tags = new List<Tag>();
+        foreach (var tagId in addBlogPostRequest.SelectedTags)
         {
-            
+            var existingTag = await _tagRepository.GetAsync(Guid.Parse(tagId));
+            if (existingTag != null) tags.Add(existingTag);
         }
-
-        return View();
+        blogPost.Tags = tags;
+        await _blogPostsRepository.AddAsync(blogPost);
+        return RedirectToAction("Add");
     }
 }
