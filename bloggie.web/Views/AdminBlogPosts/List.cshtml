@@ -1,8 +1,49 @@
 ﻿@model System.Collections.Generic.IEnumerable<bloggie.web.Models.Domain.BlogPost?>
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "BlogPosts List";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<h2>All blog posts</h2>
+
+@if(Model.Any())
+{
+    <p>There are @Model.Count() blog posts in the database.</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Heading</th>
+            <th>Page Title</th>
+            <th>Tags</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var blogPost in Model)
+        {
+            <tr>
+                <td>@blogPost.Id</td>
+                <td>@blogPost.Heading</td>
+                <td>@blogPost.PageTitle</td>
+                <td>
+                    <div class="d-flex">
+                        @foreach (var tag in blogPost.Tags)
+                        {
+                            <span class="badge bg-secondary me-1">@tag.Name</span>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <a asp-area="" asp-action="Edit" asp-controller="AdminBlogPosts" asp-route-id="@blogPost.Id" class="btn btn-dark">Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There are no blog posts in the database.</p>
+}

@@ -60,4 +60,10 @@ public class AdminBlogPostsController : Controller
         var blogPosts = await _blogPostsRepository.GetAllAsync();
         return View(blogPosts);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit()
+    {
+        
+    }
 }
