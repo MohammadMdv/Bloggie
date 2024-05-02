@@ -31,9 +31,24 @@ public class BlogPostsRepository : IBlogPostsRepository
         return blogPost;
     }
 
-    public Task<BlogPost> UpdateAsync(BlogPost blogPost)
+    public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)
     {
-        throw new NotImplementedException();
+        var existingBlogPost = await GetAsync(blogPost.Id);
+        if (existingBlogPost == null)
+            return null;
+        existingBlogPost.Id = blogPost.Id;
+        existingBlogPost.Heading = blogPost.Heading;
+        existingBlogPost.PageTitle = blogPost.PageTitle;
+        existingBlogPost.Content = blogPost.Content;
+        existingBlogPost.ShortDescription = blogPost.ShortDescription;
+        existingBlogPost.FeaturedImageUrl = blogPost.FeaturedImageUrl;
+        existingBlogPost.UrlHandle = blogPost.UrlHandle;
+        existingBlogPost.PublishedDate = blogPost.PublishedDate;
+        existingBlogPost.Author = blogPost.Author;
+        existingBlogPost.Visible = blogPost.Visible;
+        existingBlogPost.Tags = blogPost.Tags;
+        await _bloggieDbContext.SaveChangesAsync();
+        return existingBlogPost;
     }
 
     public Task<BlogPost> DeleteAsync(Guid id)

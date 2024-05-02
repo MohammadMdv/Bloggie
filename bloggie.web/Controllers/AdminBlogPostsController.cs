@@ -85,7 +85,34 @@ public class AdminBlogPostsController : Controller
             };
             return View(model);
         }
-
+        return View(null);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Edit(EditBlogPostRequest editBlogPostRequest)
+    {
+        var blogPostDomain = new BlogPost
+        {
+            Id = editBlogPostRequest.Id,
+            Heading = editBlogPostRequest.Heading,
+            PageTitle = editBlogPostRequest.PageTitle,
+            Content = editBlogPostRequest.Content,
+            ShortDescription = editBlogPostRequest.ShortDescription,
+            FeaturedImageUrl = editBlogPostRequest.FeaturedImageUrl,
+            UrlHandle = editBlogPostRequest.UrlHandle,
+            PublishedDate = editBlogPostRequest.PublishedDate,
+            Author = editBlogPostRequest.Author,
+            Visible = editBlogPostRequest.Visible,
+        };
+        var tags = new List<Tag>();
+        foreach (var tagId in editBlogPostRequest.SelectedTags)
+        {
+            var existingTag = await _tagRepository.GetAsync(Guid.Parse(tagId));
+            if (existingTag != null) tags.Add(existingTag);
+        }
+        blogPostDomain.Tags = tags;
+        if(await _blogPostsRepository.UpdateAsync(blogPostDomain) != null)
+            return RedirectToAction("List");
         return View(null);
     }
 }
