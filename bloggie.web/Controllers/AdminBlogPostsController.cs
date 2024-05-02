@@ -115,4 +115,12 @@ public class AdminBlogPostsController : Controller
             return RedirectToAction("List");
         return View(null);
     }
+    
+    [HttpDelete]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        if (await _blogPostsRepository.DeleteAsync(id) != null)
+            return Ok();
+        return View(null);
+    }
 }

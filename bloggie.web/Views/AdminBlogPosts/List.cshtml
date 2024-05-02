@@ -37,6 +37,7 @@
                 </td>
                 <td>
                     <a asp-area="" asp-action="Edit" asp-controller="AdminBlogPosts" asp-route-id="@blogPost.Id" class="btn btn-dark">Edit</a>
+                    <button data-id="@blogPost.Id" class="btn btn-danger delete-button">Delete</button>
                 </td>
             </tr>
         }
@@ -46,4 +47,25 @@
 else
 {
     <p>There are no blog posts in the database.</p>
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const confirmed = confirm('Are you sure you want to delete this blog post?');
+                if (confirmed) {
+                    fetch(`/AdminBlogPosts/Delete/${id}`, { method: 'DELETE' })
+                        .then(response => {
+                            if (response.ok) {
+                                location.reload();
+                            } else {
+                                alert('Failed to delete blog post');
+                            }
+                        });
+                }
+            });
+        });
+    </script>
 }

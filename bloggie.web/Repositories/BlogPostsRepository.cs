@@ -51,8 +51,13 @@ public class BlogPostsRepository : IBlogPostsRepository
         return existingBlogPost;
     }
 
-    public Task<BlogPost> DeleteAsync(Guid id)
+    public async Task<BlogPost?> DeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var blogPost = await GetAsync(id);
+        if (blogPost == null)
+            return null;
+        _bloggieDbContext.BlogPosts.Remove(blogPost);
+        await _bloggieDbContext.SaveChangesAsync();
+        return blogPost;
     }
 }
