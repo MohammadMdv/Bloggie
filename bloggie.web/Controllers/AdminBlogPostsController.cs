@@ -81,14 +81,11 @@ public class AdminBlogPostsController : Controller
                 Author = blogPost.Author,
                 Visible = blogPost.Visible,
                 Tags = tags.Select(t => new SelectListItem(t?.Name, t?.Id.ToString())),
-                SelectedTags = blogPost.Tags.Select(t => t.Id.ToString()).ToArray()
+                SelectedTags = blogPost.Tags?.Select(t => t.Id.ToString()).ToArray() ?? Array.Empty<string>()
             };
             return View(model);
         }
 
         return View(null);
-    }
-    {
-        
     }
 }
