@@ -11,5 +11,10 @@ namespace bloggie.web.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
+        [HttpPost]
+        public async Task<IActionResult> UploadAsync(IFormFile file)
+        {
+            return Ok("This is the image controller");
+        }
     }
 }
