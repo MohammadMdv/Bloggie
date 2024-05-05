@@ -2,5 +2,5 @@
 
 public interface IImageRepository
 {
-    Task<string> UploadAsync(IFormFile file);
+    Task<string?> UploadAsync(IFormFile file);
 }
