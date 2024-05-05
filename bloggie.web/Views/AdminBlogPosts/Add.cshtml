@@ -74,21 +74,28 @@
         const featuredImageUrl = document.getElementById('FeaturedImageUrl');
         const featuredImageDisplay = document.getElementById('featuredImageDisplay');
         
-        featureImageUpload.addEventListener('change', async function(e) {
-            const file = e.target.files[0];
+        async function uploadFeaturedImage(e) {
+            console.log(e.target.files[0]);
             const formData = new FormData();
-            formData.append('file', file);
-            const response = await fetch('/api/Images', {
+            formData.append('file', e.target.files[0]);
+            await fetch('/api/Images', {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*'
                 },
                 body: formData
+            }).then(response => response.json())
+            .then(result => {
+                featuredImageUrl.value = result.link;
+                featuredImageDisplay.src = result.link;
+                featuredImageDisplay.style.display = 'block';
             });
-            const data = await response.json();
-            featuredImageUrl.value = data.url;
-            featuredImageDisplay.src = data.url;
-            featuredImageDisplay.style.display = 'block';
-        });
+        }
+        
+        featureImageUpload.addEventListener('change', uploadFeaturedImage);
+        
+        
+        
     </script>
 }
+
