@@ -11,9 +11,9 @@ public class CloudinaryImageRepository : IImageRepository
     {
         _configuration = configuration;
         _account = new Account(
-            configuration.GetSection("Cloudinary")["CloudName"],
-            configuration.GetSection("Cloudinary")["ApiKey"],
-            configuration.GetSection("Cloudinary")["ApiSecret"]);
+            _configuration.GetSection("Cloudinary")["CloudName"],
+            _configuration.GetSection("Cloudinary")["ApiKey"],
+            _configuration.GetSection("Cloudinary")["ApiSecret"]);
     }
     public async Task<string?> UploadAsync(IFormFile file)
     {
@@ -26,7 +26,7 @@ public class CloudinaryImageRepository : IImageRepository
         var uploadResult = await client.UploadAsync(uploadParams);
         if (uploadResult!=null && uploadResult.StatusCode == HttpStatusCode.OK)
         {
-            return uploadResult.SecureUri.AbsoluteUri;
+            return uploadResult.SecureUri.ToString();
         }
 
         return null;
