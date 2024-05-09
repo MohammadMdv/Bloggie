@@ -51,6 +51,12 @@ public class BlogPostsRepository : IBlogPostsRepository
         return existingBlogPost;
     }
 
+    public async Task<BlogPost?> GetByUrlHandleAsync(string urlHandle)
+    {
+        return await _bloggieDbContext.BlogPosts.Include(x=> x!.Tags).
+            FirstOrDefaultAsync(x => x != null && x.UrlHandle == urlHandle);
+    }
+
     public async Task<BlogPost?> DeleteAsync(Guid id)
     {
         var blogPost = await GetAsync(id);

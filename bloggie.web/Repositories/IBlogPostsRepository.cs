@@ -8,5 +8,6 @@ public interface IBlogPostsRepository
     public Task<BlogPost?> GetAsync(Guid id);
     public Task<BlogPost> AddAsync(BlogPost blogPost);
     public Task<BlogPost?> UpdateAsync(BlogPost blogPost);
+    public Task<BlogPost?> GetByUrlHandleAsync(string urlHandle);
     public Task<BlogPost?> DeleteAsync(Guid id);
 }
