@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using bloggie.web.Models;
 using bloggie.web.Models.Domain;
+using bloggie.web.Models.ViewModels;
 using bloggie.web.Repositories;
 
 namespace bloggie.web.Controllers;
@@ -10,17 +11,27 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IBlogPostsRepository _blogPostsRepository;
+    private readonly ITagRepository _tagRepository;
 
-    public HomeController(ILogger<HomeController> logger, IBlogPostsRepository blogPostsRepository)
+    public HomeController(ILogger<HomeController> logger,
+        IBlogPostsRepository blogPostsRepository,
+        ITagRepository tagRepository)
     {
         _logger = logger;
         _blogPostsRepository = blogPostsRepository;
+        _tagRepository = tagRepository;
     }
 
     public async Task<IActionResult> Index()
     {
-        var blogPosts = await _blogPostsRepository.GetAllAsync();
-        return View((List<BlogPost>)blogPosts);
+        IEnumerable<BlogPost> blogPosts = (await _blogPostsRepository.GetAllAsync())!;
+        IEnumerable<Tag> tags = (await _tagRepository.GetAllAsync())!;
+        var model = new HomeViewModel
+        {
+            BlogPosts = blogPosts,
+            Tags = tags
+        };
+        return View(model);
     }
 
     public IActionResult Privacy()
