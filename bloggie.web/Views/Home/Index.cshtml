@@ -1,8 +1,48 @@
-﻿@{
+﻿@model List<bloggie.web.Models.Domain.BlogPost>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 py-5" style="display: flex;">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">
+                Bloggie - The AI Blog
+            </h1>
+            <p class="lead">
+                A simple blogging platform built with ASP.NET Core and Entity Framework Core for AI geeks and lovers of science.
+            </p>
+        </div>
+        <div class="col-12 col-lg-6">
+            <img src="https://images.pexels.com/photos/529598/pexels-photo-529598.jpeg?auto=compress&cs=tinysrgb&w=600"
+                 alt="Bloggie - Dev blogs"
+                 class="d-block mx-lg-auto img-fluid" width="300"/>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            @if (Model.Any())
+            {
+                foreach (var blogPost in Model)
+                {
+                    <div class="mb-5 bg-light box-shadow p-5">
+                        <img src="@blogPost.FeaturedImageUrl" class="mb-2 d-block img-fluid" alt="@blogPost.Heading">
+                        <h2 class="mb-4">@blogPost.Heading</h2>
+                        <p class="mb-4">
+                            @foreach(var tag in blogPost.Tags)
+                            {
+                                <span class="badge bg-secondary me-1">@tag.Name</span>
+                            }
+                        </p>
+                        
+                        <p class="mb-4">@blogPost.ShortDescription</p>
+                        <a class="btn btn-dark" href="#">Read More</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
 </div>
