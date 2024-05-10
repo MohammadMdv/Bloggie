@@ -21,21 +21,21 @@ public class AuthDbContext : IdentityDbContext
         var superAdminRoleId = "80a3da7b-f252-4af2-b694-c5963b20f332";
         var roles = new List<IdentityRole>
         {
-            new IdentityRole
+            new()
             {
                 Name = "Admin",
                 NormalizedName = "Admin",
                 Id = adminRoleId,
                 ConcurrencyStamp = adminRoleId
             },
-            new IdentityRole
+            new()
             {
                 Name = "User",
                 NormalizedName = "User",
                 Id = userRoleId,
                 ConcurrencyStamp = userRoleId
             },
-            new IdentityRole
+            new()
             {
                 Name = "SuperAdmin",
                 NormalizedName = "SuperAdmin",
@@ -56,5 +56,29 @@ public class AuthDbContext : IdentityDbContext
             Email = "mohammad.s13811381@gmail.com",
             NormalizedEmail = "mohammad.s13811381@gmail.com".ToUpper()
         };
+        
+        superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()
+            .HashPassword(superAdminUser, "SuperAdmin@123");
+        
+        // Add all roles to SuperAdminUser
+        var superAdminRoles = new List<IdentityUserRole<string>>
+        {
+            new()
+            {
+                RoleId = superAdminRoleId,
+                UserId = superAdminId
+            },
+            new()
+            {
+                RoleId = adminRoleId,
+                UserId = superAdminId
+            },
+            new()
+            {
+                RoleId = userRoleId,
+                UserId = superAdminId
+            }
+        };
+        builder.Entity<IdentityUserRole<string>>().HasData(superAdminRoles);
     }
 }
