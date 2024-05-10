@@ -7,10 +7,13 @@ namespace bloggie.web.Controllers;
 public class AccountController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public AccountController(UserManager<IdentityUser> userManager)
+    public AccountController(UserManager<IdentityUser> userManager, 
+        SignInManager<IdentityUser> signInManager)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
     }
     // GET
     [HttpGet]
@@ -45,5 +48,34 @@ public class AccountController : Controller
         }
         
         return View(); 
+    }
+    
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(loginViewModel);
+        }
+
+        var signInResult = await _signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
+
+        if (signInResult.Succeeded)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View();
+    }
+
+    public IActionResult Logout()
+    {
+        throw new NotImplementedException();
     }
 }
