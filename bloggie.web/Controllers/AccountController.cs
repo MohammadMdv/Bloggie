@@ -74,8 +74,10 @@ public class AccountController : Controller
         return View();
     }
 
-    public IActionResult Logout()
+    [HttpGet]
+    public async Task<IActionResult> Logout()
     {
-        throw new NotImplementedException();
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
     }
 }
