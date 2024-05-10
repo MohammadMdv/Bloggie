@@ -59,6 +59,7 @@ public class AuthDbContext : IdentityDbContext
         
         superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()
             .HashPassword(superAdminUser, "SuperAdmin@123");
+        builder.Entity<IdentityUser>().HasData(superAdminUser);
         
         // Add all roles to SuperAdminUser
         var superAdminRoles = new List<IdentityUserRole<string>>
