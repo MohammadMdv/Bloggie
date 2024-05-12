@@ -51,9 +51,13 @@ public class AccountController : Controller
     }
     
     [HttpGet]
-    public IActionResult Login()
+    public IActionResult Login(string ReturnUrl)
     {
-        return View();
+        var model = new LoginViewModel
+        {
+            ReturnUrl = ReturnUrl
+        };
+        return View(model);
     }
     
     [HttpPost]
@@ -68,6 +72,10 @@ public class AccountController : Controller
 
         if (signInResult.Succeeded)
         {
+            if (!string.IsNullOrEmpty(loginViewModel.ReturnUrl) && Url.IsLocalUrl(loginViewModel.ReturnUrl))
+            {
+                return Redirect(loginViewModel.ReturnUrl);
+            }
             return RedirectToAction("Index", "Home");
         }
 
