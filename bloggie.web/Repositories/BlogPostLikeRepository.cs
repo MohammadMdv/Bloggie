@@ -23,4 +23,17 @@ public class BlogPostLikeRepository : IBlogPostLikeRepository
         await _bloggieDbContext.SaveChangesAsync();
         return blogPostLike;
     }
+
+    private async Task<BlogPostLike> GetLike(Guid blogPostId, Guid userId)
+    {
+        return (await _bloggieDbContext.BlogPostLikes.FirstOrDefaultAsync(x => x.BlogPostId == blogPostId && x.UserId == userId))!;
+    }
+
+    public async Task<BlogPostLike> RemoveLike(BlogPostLike blogPostLike)
+    {
+        var like = await GetLike(blogPostLike.BlogPostId, blogPostLike.UserId);
+        _bloggieDbContext.BlogPostLikes.Remove(like);
+        await _bloggieDbContext.SaveChangesAsync();
+        return blogPostLike;
+    }
 }

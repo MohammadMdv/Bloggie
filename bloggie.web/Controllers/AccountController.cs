@@ -25,11 +25,6 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(registerViewModel);
-        }
-
         var user = new IdentityUser
         {
             UserName = registerViewModel.Username,
@@ -63,11 +58,6 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel loginViewModel)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(loginViewModel);
-        }
-
         var signInResult = await _signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
 
         if (signInResult.Succeeded)

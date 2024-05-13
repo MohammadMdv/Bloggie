@@ -26,7 +26,7 @@
                         <i class="bi bi-hand-thumbs-up"></i>
                     </a>
                 }
-                <span>@Model.LikesCount</span> Likes
+                <span id="likesCount">@Model.LikesCount</span> Likes
             </div>
             
             <div class="mb-3 d-flex">
@@ -47,6 +47,19 @@
 {
     <script>
         const btnLike = document.getElementById('btnLike');
+        const likesCount = document.getElementById('likesCount');
+        
+        async function getLikesCount() {
+            await fetch('/api/BlogPostLike/@Model.Id/LikesCount', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                }
+            }).then(data => data.json())
+            .then(result => likesCount.innerHTML = result);
+                
+        }
         
         async function addLike() {
             await fetch('/api/BlogPostLike/Add', {
@@ -56,10 +69,35 @@
                     'Accept': '*/*'
                 },
                 body: JSON.stringify({
-                    blogPostId: @Model.Id,
+                    blogPostId: '@Model.Id',
                     userId: '@UserManager.GetUserId(User)'
                 })
-            }).then(console.log("Request finished"));
+            }).then(() => {
+                btnLike.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                btnLike.removeEventListener('click', addLike);
+                getLikesCount();
+                btnLike.addEventListener('click', removeLike);
+            });
+        }
+        
+        async function removeLike() {
+            await fetch('/api/BlogPostLike/Remove', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify({
+                    blogPostId: '@Model.Id',
+                    userId: '@UserManager.GetUserId(User)'
+                })
+            }).then(() => {
+                btnLike.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>';
+                btnLike.removeEventListener('click', removeLike);
+                getLikesCount();
+                btnLike.addEventListener('click', addLike);
+            });
+                
         }
         
         btnLike.addEventListener('click', addLike);

@@ -33,5 +33,26 @@ namespace bloggie.web.Controllers
             await _blogPostLikeRepository.AddLike(blogPostLike);
             return Ok();
         }
+        
+        [HttpPost]
+        [Route("Remove")]
+        public async Task<IActionResult> RemoveLike([FromBody] AddLikeRequest request)
+        {
+            var blogPostLike = new BlogPostLike
+            {
+                BlogPostId = request.BlogPostId,
+                UserId = request.UserId
+            };
+            await _blogPostLikeRepository.RemoveLike(blogPostLike);
+            return Ok();
+        }
+        
+        [HttpGet]
+        [Route("{blogPostId}/LikesCount")]
+        public async Task<IActionResult> GetLikesCount([FromRoute] Guid blogPostId)
+        {
+            var likesCount = await _blogPostLikeRepository.GetLikesCount(blogPostId);
+            return Ok(likesCount);
+        }
     }
 }
