@@ -16,4 +16,5 @@ public class BlogDetailsViewModel
     public bool Visible { get; set; }
     public ICollection<Tag> Tags { get; set; }
     public int LikesCount { get; set; }
+    public bool Liked { get; set; }
 }

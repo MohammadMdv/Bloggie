@@ -7,4 +7,5 @@ public interface IBlogPostLikeRepository
     Task<int> GetLikesCount(Guid blogPostId);
     Task<BlogPostLike> AddLike(BlogPostLike blogPostLike);
     Task<BlogPostLike> RemoveLike(BlogPostLike blogPostLike);
+    Task<IEnumerable<BlogPostLike>> GetLikesForBlog(Guid blogPostId);
 }

@@ -22,9 +22,18 @@
             <div class="mb-3">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <a id="btnLike" style="cursor: pointer;">
-                        <i class="bi bi-hand-thumbs-up"></i>
-                    </a>
+                    if (Model.Liked)
+                    {
+                        <a id="btnLike" style="cursor: pointer;">
+                            <i class="bi bi-hand-thumbs-up-fill"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a id="btnLike" style="cursor: pointer;">
+                            <i class="bi bi-hand-thumbs-up"></i>
+                        </a>
+                    }
                 }
                 <span id="likesCount">@Model.LikesCount</span> Likes
             </div>
@@ -100,6 +109,18 @@
                 
         }
         
-        btnLike.addEventListener('click', addLike);
+        async function checkIfLiked() {
+            btnLike.removeEventListener('click', checkIfLiked);
+            if (btnLike.innerHTML.includes('bi-hand-thumbs-up-fill')) {
+                btnLike.addEventListener('click', removeLike)
+                await removeLike();
+            } else {
+                btnLike.addEventListener('click', addLike)
+                await addLike();
+            }
+        }
+        
+        btnLike.addEventListener('click', checkIfLiked);
+        
     </script>
 }
