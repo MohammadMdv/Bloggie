@@ -1,4 +1,5 @@
-﻿using bloggie.web.Models.ViewModels;
+﻿using bloggie.web.Models.Domain;
+using bloggie.web.Models.ViewModels;
 using bloggie.web.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +12,19 @@ public class BlogsController : Controller
     private readonly IBlogPostLikeRepository _blogPostLikeRepository;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IBlogPostCommentRepository _blogPostCommentRepository;
 
     public BlogsController(IBlogPostsRepository blogPostsRepository,
         IBlogPostLikeRepository blogPostLikeRepository,
         SignInManager<IdentityUser> signInManager,
-        UserManager<IdentityUser> userManager)
+        UserManager<IdentityUser> userManager,
+        IBlogPostCommentRepository blogPostCommentRepository)
     {
         _blogPostsRepository = blogPostsRepository;
         _blogPostLikeRepository = blogPostLikeRepository;
         _signInManager = signInManager;
         _userManager = userManager;
+        _blogPostCommentRepository = blogPostCommentRepository;
     }
     // GET
     [HttpGet]
@@ -60,5 +64,26 @@ public class BlogsController : Controller
             };
         }
         return View(blogDetailsViewModel);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Index(BlogDetailsViewModel blogDetailsViewModel)
+    {
+        if (_signInManager.IsSignedIn(User))
+        {
+            var domainModel = new BlogPostComment
+            {
+                BlogPostId = blogDetailsViewModel.Id,
+                Description = blogDetailsViewModel.Comment,
+                UserId = Guid.Parse(_userManager.GetUserId(User) ?? string.Empty),
+                DateAdded = DateTime.Now
+            };
+            await _blogPostCommentRepository.AddCommentAsync(domainModel);
+            
+            return RedirectToAction("Index", "Home", 
+                new { blogDetailsViewModel.UrlHandle});
+        }
+
+        return View();
     }
 }
