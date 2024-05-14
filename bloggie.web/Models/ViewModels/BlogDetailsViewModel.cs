@@ -17,5 +17,6 @@ public class BlogDetailsViewModel
     public ICollection<Tag> Tags { get; set; }
     public int LikesCount { get; set; }
     public bool Liked { get; set; }
-    public string Comment { get; set; }
+    public string CurrentComment { get; set; }
+    public IEnumerable<BlogComment> Comments { get; set; }
 }
