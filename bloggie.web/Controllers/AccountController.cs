@@ -25,23 +25,25 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
-        var user = new IdentityUser
+        if (ModelState.IsValid)
         {
-            UserName = registerViewModel.Username,
-            Email = registerViewModel.Email
-        };
-
-        var identityResult = await _userManager.CreateAsync(user, registerViewModel.Password);
-
-        if (identityResult.Succeeded)
-        {
-            var roleIdentityResult = await _userManager.AddToRoleAsync(user, "User");
-            if (roleIdentityResult.Succeeded)
+            var user = new IdentityUser
             {
-                return RedirectToAction("Index", "Home");
+                UserName = registerViewModel.Username,
+                Email = registerViewModel.Email
+            };
+
+            var identityResult = await _userManager.CreateAsync(user, registerViewModel.Password);
+
+            if (identityResult.Succeeded)
+            {
+                var roleIdentityResult = await _userManager.AddToRoleAsync(user, "User");
+                if (roleIdentityResult.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
         }
-        
         return View(); 
     }
     

@@ -7,8 +7,19 @@
 
 <h1>List of Tags</h1>
 
+
 @if (Model.Count > 0)
 {
+    <form method="get" asp-action="List" asp-controller="AdminTags">
+        <div class="input-group mb-3">
+            <input type="search" class="form-control" placeholder="Search tags" name="search">
+            <button class="btn btn-dark" type="submit">Search</button>
+        </div>
+    </form>
+
+    <!-- Button to redirect to all list -->
+    <a href="@Url.Action("List", "AdminTags")" class="btn btn-primary mb-3">Back to All Tags</a>
+    
     <p>There are @Model.Count tags in the database.</p>
     <table class="table">
         <thead>

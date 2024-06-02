@@ -42,9 +42,13 @@ public class AdminTagsController : Controller
     // Function to list the tags
     [HttpGet]
     [ActionName("List")]
-    public async Task<IActionResult> List()
+    public async Task<IActionResult> List(string? search)
     {
         var tags = await _tagRepository.GetAllAsync();
+        if (search != null)
+        {
+            tags = tags.Where(t => t != null && (t.Name.Contains(search) || t.DisplayName.Contains(search))).ToList();
+        }
         return View(tags as List<Tag>);
     }
     
