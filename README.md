@@ -1,8 +1,9 @@
 
 # Bloggie
 
-This is a ASP.NET MVC project for blogging.
+This is an ASP.NET MVC project for blogging and sharing your ideas with others.
 
+![image](https://github.com/MohammadMdv/Bloggie/assets/95940606/ca9e48e8-0c17-4604-8e1a-e93381470cac)
 
 ## Abilities
 * Registering anf login
