@@ -24,5 +24,21 @@
       <jdbc-url>Server=localhost;Database=BloggieAuthDb;Trusted_Connection=True;Trust Server Certificate=Yes;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="BloggieDb@localhost [2]" group="postgreSQL" uuid="bb447f25-6d24-4c21-ad26-8ff687143c46">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost/BloggieDb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="BloggieAuthDb@localhost [2]" group="postgreSQL" uuid="a4f32de1-20e1-4fd6-af2b-302eb30e8281">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost/BloggieAuthDb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
